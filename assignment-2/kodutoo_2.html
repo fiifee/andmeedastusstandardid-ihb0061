@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodutöö 2 - Koduvõrgu Analüüs</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        pre {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .mermaid {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #dfe6e9;
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        .mask {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>IHB0061 - Kodutöö 2: Võrgudiagnostika</h1>
+    <p><strong>Nimi:</strong> Raiko Evestus | <strong>Kuupäev:</strong> 02.02.2026</p>
+
+    <!-- I TASE -->
+    <div class="section">
+        <h2>I Tase: Windows PowerShell Diagnostika</h2>
+
+        <h3>1. IP Konfiguratsioon (ipconfig /all)</h3>
+        <p><i>Kõik füüsilised (MAC) aadressid on privaatsuse huvides peidetud.</i></p>
+        <pre>
+Wireless LAN adapter Wi-Fi:
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Intel(R) Wi-Fi 6 AX201 160MHz
+   Physical Address. . . . . . . . . : <span class="mask">XX-XX-XX-XX-XX-XX</span>
+   IPv4 Address. . . . . . . . . . . : 192.168.3.18
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Gateway . . . . . . . . . : 192.168.3.1
+   DHCP Server . . . . . . . . . . . : 192.168.3.1
+   DNS Servers . . . . . . . . . . . : 192.168.3.1
+        </pre>
+
+        <h3>2. Ühenduse testimine (ping)</h3>
+        <pre>
+Pinging 8.8.8.8 with 32 bytes of data:
+Reply from 8.8.8.8: bytes=32 time=19ms TTL=113
+Reply from 8.8.8.8: bytes=32 time=66ms TTL=113
+...
+Ping statistics for 8.8.8.8:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)
+    Average round trip time: 60ms
+        </pre>
+
+        <h3>3. DNS Päring (nslookup)</h3>
+        <pre>
+Server:  UnKnown
+Address:  192.168.3.1
+
+Name:    google.com
+Addresses:  2a00:1450:4026:803::200e
+	  216.58.209.206
+        </pre>
+    </div>
+
+    <!-- ÜLESANNE -->
+    <div class="section">
+        <h2>Koduvõrgu Ülesehitus</h2>
+
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+
+        <div class="mermaid">
+            graph TD
+            Internet((Internet))
+            Modem["Elisa Modem (192.168.118.1)"]
+            Router["Huawei AX3 (192.168.3.1)"]
+            PC["Minu Arvuti (192.168.3.18)"]
+            Phone["Nutitelefon (Wi-Fi)"]
+
+            Internet --- Modem
+            Modem --- Router
+            Router --- PC
+            Router --- Phone
+
+            style Router fill:#f9f,stroke:#333,stroke-width:2px
+            style Modem fill:#eee,stroke:#333,stroke-width:2px
+            style PC fill:#bbf,stroke:#333,stroke-width:2px
+        </div>
+
+        <h3>Seadme ja Võrgu info</h3>
+        <table>
+            <tr>
+                <th>Parameeter</th>
+                <th>Väärtus</th>
+            </tr>
+            <tr>
+                <td>IP Aadress</td>
+                <td>192.168.3.18</td>
+            </tr>
+            <tr>
+                <td>Gateway</td>
+                <td>192.168.3.1</td>
+            </tr>
+            <tr>
+                <td>Ruuteri Mudel</td>
+                <td>HUAWEI WiFi AX3</td>
+            </tr>
+            <tr>
+                <td>Riistvara/Firmware</td>
+                <td>HW: VER.A | SW: 2.0.0.112 (HarmonyOS 2.0.0)</td>
+            </tr>
+            <tr>
+                <td>Interneti kiirus</td>
+                <td>Allalaadimine: 98.66 Mbps | Üleslaadimine: 16.16 Mbps | Ping: 25ms</td>
+            </tr>
+            <tr>
+                <td>Kohaliku võrgu kiirus</td>
+                <td>480 Mbps (Wi-Fi 6 Link Speed)</td>
+            </tr>
+            <tr>
+                <td>VPN / DMZ / PoE</td>
+                <td>Ei ole kasutusel</td>
+            </tr>
+            <tr>
+                <td>Parooli tugevus</td>
+                <td>Tugev (Kasutaja määratud)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- II TASE -->
+    <div class="section">
+        <h2>II Tase: WSL (Windows Subsystem for Linux)</h2>
+        <p>WSL võimaldab kasutada Linuxi terminali otse Windowsis. Antud ülesande raames paigaldati Ubuntu
+            ja vajalikud võrgutööriistad.</p>
+
+        <h3>1. Paigaldamine ja pakettide haldus</h3>
+        <pre>
+# Süsteemi uuendamine ja tööriistade paigaldus
+sudo apt-get update
+sudo apt install net-tools whois inetutils-traceroute
+        </pre>
+
+        <h3>2. Linuxi võrgudiagnostika käsud (väljundid Ubuntu WSL-ist)</h3>
+
+        <h4>ifconfig</h4>
+        <pre>
+eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 172.29.225.251  netmask 255.255.240.0  broadcast 172.29.239.255
+        ether <span class="mask">00:15:5d:xx:xx:xx</span>  txqueuelen 1000  (Ethernet)
+        </pre>
+
+        <h4>ping -c 4 8.8.8.8</h4>
+        <pre>
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=20.1 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=23.5 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=112 time=24.0 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=112 time=19.5 ms
+        </pre>
+
+        <h4>whois google.com</h4>
+        <pre>
+Domain Name: GOOGLE.COM
+Registry Domain ID: 2138514_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.markmonitor.com
+Registrar: MarkMonitor Inc.
+        </pre>
+
+        <h4>traceroute google.com</h4>
+        <pre>
+traceroute to google.com (216.58.209.206), 10 hops max
+  1   172.29.224.1  0.325ms  0.191ms  0.250ms 
+  2   192.168.3.1  2.933ms  1.841ms  4.407ms 
+  3   192.168.118.1  2.873ms  2.191ms  2.251ms 
+  4   172.17.163.237  271.392ms  241.370ms  42.326ms 
+  5   172.17.163.141  20.913ms  15.446ms  17.115ms 
+  6   *  *  * 
+  7   146.255.178.128  65.299ms  16.585ms  20.862ms 
+  8   213.192.184.221  16.011ms  15.582ms  15.758ms 
+  9   213.192.186.48  18.739ms  69.553ms  25.618ms 
+ 10   74.125.146.150  20.040ms  18.922ms  19.727ms 
+        </pre>
+
+    </div>
+</body>
+
+</html>
